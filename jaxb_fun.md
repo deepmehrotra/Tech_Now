@@ -39,7 +39,6 @@ public class XMLStringReplace {
 
     // Method to replace field value using regex
     private static String replaceFieldValue(String xmlString, String fieldName, String newValue) {
-        // Construct regex pattern to match the field and its value
         String regex = "<" + fieldName + ">(.*?)</" + fieldName + ">";
 
         // Compile the regex pattern
@@ -48,8 +47,21 @@ public class XMLStringReplace {
         // Create a matcher for the input XML string
         Matcher matcher = pattern.matcher(xmlString);
 
-        // Replace the field value with the new value
-        return matcher.replaceAll("<" + fieldName + ">" + newValue + "</" + fieldName + ">");
+        if (matcher.find()) {
+            // Get the matched value
+            String matchedValue = matcher.group(1);
+
+            System.out.println("Current matched value = "+matchedValue);
+
+            // Replace the matched value with the new value
+            String replacedString = matcher.replaceAll("<" + fieldName + ">" + newValue + "</" + fieldName + ">");
+
+            // Return the replaced string
+            return replacedString;
+        } else {
+            // If no match found, return the original string
+            return xmlString;
+        }
     }
 }
 
